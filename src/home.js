@@ -1,16 +1,23 @@
-import { View, FlatList, Text, Modal, TextInput, SafeAreaView, TouchableOpacity, Dimensions, StatusBar} from "react-native";
+import { View, FlatList, Text, Modal, TextInput, SafeAreaView, TouchableOpacity, Dimensions, StatusBar, Image, Easing} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
-
+import * as Font from "expo-font"
 
 //Custom 
 import palettes from "./components/palettes";
 import styles from "./styles/styles";
 import NoteThumbnail from "./components/noteThumbnail";
 
-const pallette = palettes[0]
 
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+    faChevronLeft,
+    faBars,
+} from '@fortawesome/free-solid-svg-icons'
+
+var pallette = palettes[2];
+var typePallette = palettes[3];
 
 export default function Home({navigation}) {
 
@@ -18,12 +25,12 @@ export default function Home({navigation}) {
     "July", "August", "September", "October", "November", "December"
     ];
 
+
     const [tempTitle, setTempTitle] = useState();
     const [notes, setNotes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedValue, setSelectedValue] = useState("Simple Note");
     const [tag, setTag] = useState("All");
-
 
     const [originalNotes, setOriginalNotes] = useState([])
 
@@ -41,7 +48,10 @@ export default function Home({navigation}) {
         FileSystem.readDirectoryAsync(doc).then((dirArray) => {
             if(!dirArray.includes("Notes")) {
                 FileSystem.makeDirectoryAsync(doc + "Notes").then((dir) => {
-                    console.log(dir)
+                    const config = {
+                        theme: 'dark'
+                    }
+                    FileSystem.writeAsStringAsync(doc + "config.json", JSON.stringify(config))
                 })
             }else{
                 FileSystem.readDirectoryAsync(doc + "Notes").then((dirArray) => {
@@ -64,10 +74,18 @@ export default function Home({navigation}) {
     
     useEffect(() => {
         setupApp()
+        FileSystem.readAsStringAsync(doc + "config.json").then((file) => {
+            const ob = JSON.parse(file)
+            if(ob.theme == "Dark"){
+                StatusBar.setBackgroundColor(pallette[3])
+                StatusBar.setBarStyle("light-content")
+            }
+        })
     }, [])
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
+            pallette = global.pallette
             setupApp()
         });
         return unsubscribe;
@@ -103,28 +121,42 @@ export default function Home({navigation}) {
     }
 
 /*
-    FileSystem.readDirectoryAsync(doc + "Notes").then((arr) => {
-        console.log(arr)
-        arr.forEach(element => {
-            //console.log(element)
-            //FileSystem.deleteAsync(doc + "Notes/" + element)
-        });
-    })
-
-   */
-    StatusBar.setBackgroundColor(pallette[0])
+    
+    */
+   
+    StatusBar.setBackgroundColor(pallette[3])
     StatusBar.setBarStyle("light-content")
+    const [loaded] = Font.useFonts({
+        'indieFlower': require('../assets/fonts/IndieFlower.ttf'),
+    });
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: pallette[1]}}>
-            <View style={styles.header}>
-                <Text style={styles.text}> Amazing Notes </Text>
-            </View>
+        <SafeAreaView style={{flex: 1, backgroundColor: pallette[3]}}>
+            <View style={{height: 100, backgroundColor: pallette[3]}}>
+                <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    <Image source={require('../assets/logo_img_only.png')} style={styles.logo} ></Image>
 
-
+                    <TouchableOpacity style={{position: "absolute", right: 10, top: 40}} onPress={() => {navigation.navigate('Settings')}}>
+                        <FontAwesomeIcon icon={faBars} size={40} style={{ color: pallette[0], borderRadius: 10}}/> 
+                    </TouchableOpacity>
+                </View>
+             </View>
+            
             <Picker
                 selectedValue={tag}
-                style={{ height: 50, width: Dimensions.get("window").width, backgroundColor:pallette[2], marginBottom: 10 }}
+                style={
+                    tag == "All" ?
+                    {height: 50, width: Dimensions.get("window").width, backgroundColor:pallette[0], marginBottom: 10}
+                    : tag == "Simple Note" ?
+                    {height: 50, width: Dimensions.get("window").width, backgroundColor: typePallette[0], marginBottom: 10}
+                    : tag == "Recipe" ?
+                    {height: 50, width: Dimensions.get("window").width, backgroundColor:typePallette[1], marginBottom: 10}
+                    : tag == "Checklist" ?
+                    {height: 50, width: Dimensions.get("window").width, backgroundColor:typePallette[2], marginBottom: 10}
+                    :
+                    {height: 50, width: Dimensions.get("window").width, backgroundColor:typePallette[3], marginBottom: 10}
+
+                }
                 onValueChange={(itemValue, itemIndex) => {setTag(itemValue); setupTags(itemValue)}}
             >
                 <Picker.Item label="All" value="All" />
@@ -135,7 +167,6 @@ export default function Home({navigation}) {
 
             </Picker>
         
-            {/* TODO: Make this code less ugly and unreadible */}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -208,11 +239,13 @@ export default function Home({navigation}) {
                 ListEmptyComponent={<View></View>}
             />
 
-            <TouchableOpacity style={styles.aditionButton} onPress={() => {
+            <TouchableOpacity style={{backgroundColor: pallette[2], height: 60, width: 60, borderRadius: 100, position: "absolute", top: Dimensions.get("window").height / 1.1, left: Dimensions.get("window").width / 1.3}} onPress={() => {
                 setModalVisible(true)
             }}>
-                <Text style={styles.aditionButtonText}> + </Text>
+                <Text style={{alignSelf: "center", fontSize: 40, color: pallette[0]}}> + </Text>
             </TouchableOpacity>
+
+
         </SafeAreaView>
     );
 }

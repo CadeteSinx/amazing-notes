@@ -1,39 +1,11 @@
 import { StyleSheet, Dimensions, StatusBar} from "react-native";
-
-import palettes from "../components/palettes";
-const pallette = palettes[0]
+import * as FileSystem from "expo-file-system";
 
 export default StyleSheet.create({
-    header: {
-        height: 70,
-        backgroundColor: pallette[0],
-        justifyContent: "center",
+    logo: {
+        transform: [{scaleX: 0.2}, {scaleY: 0.2}],
+        bottom: 10
     },
-
-    text: {
-        color: "white",
-        fontSize: 20,
-        fontWeight: "bold",
-        alignSelf: "center",
-        justifyContent: "center",
-        top: 5
-    },
-
-    aditionButton: {
-        backgroundColor: pallette[5],
-        height: 60,
-        width: 60,
-        borderRadius: 100,
-        position: "absolute",
-        top: Dimensions.get("window").height / 1.1,
-        left: Dimensions.get("window").width / 1.3 
-    },
-
-    aditionButtonText: {
-        alignSelf: "center",
-        fontSize: 40,
-    },
-
     centeredView: {
         flex: 1,
         justifyContent: "center",
@@ -61,10 +33,6 @@ export default StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         elevation: 2
-    },
-
-    buttonClose: {
-        backgroundColor: "#2196F3",
     },
 
     textStyle: {
