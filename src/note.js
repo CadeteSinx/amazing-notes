@@ -67,7 +67,7 @@ export default function Note({route, navigation}) {
             }
             Notifications.scheduleNotificationAsync({
                 content: {
-                    title: title,
+                    title: `${object.title}-${title}`,
                     body: "",
                     data: {},
                 },
@@ -255,9 +255,6 @@ export default function Note({route, navigation}) {
         setIngredientModal(!ingredientModalVisible)
     }
 
-    pallette = global.pallette
-    typePalette = global.typePallette
-
     useEffect(() => {
         const handler = () => {
             saveFile()
@@ -310,6 +307,8 @@ export default function Note({route, navigation}) {
         },
     })
     
+  
+
     //OPTIMIZE WORKING ON THIS
     return (
         <SafeAreaView style={{flex: 1,backgroundColor: pallette[3]}}>

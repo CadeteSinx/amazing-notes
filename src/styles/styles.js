@@ -1,6 +1,9 @@
 import { StyleSheet, Dimensions, StatusBar} from "react-native";
 import * as FileSystem from "expo-file-system";
 
+import palettes from "../components/palettes";
+var pallette = palettes[2]
+
 export default StyleSheet.create({
     logo: {
         transform: [{scaleX: 0.2}, {scaleY: 0.2}],
@@ -35,8 +38,11 @@ export default StyleSheet.create({
         elevation: 2
     },
 
+    buttonClose: {
+        backgroundColor: pallette[0]
+    },
+
     textStyle: {
-        color: "white",
         fontWeight: "bold",
         textAlign: "center"
     },

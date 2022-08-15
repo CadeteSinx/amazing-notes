@@ -4,12 +4,12 @@
     "slug": "amazing-notes",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ic_launcher_adaptive_fore.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ECF0F1"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,8 +22,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo_only_transparent.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/ic_launcher_adaptive_fore.png",
+        "backgroundColor": "#ECF0F1"
       },
       "package": "com.alicesimoes.amazingnotes"
     },

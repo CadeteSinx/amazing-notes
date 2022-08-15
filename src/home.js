@@ -1,4 +1,4 @@
-import { View, FlatList, Text, Modal, TextInput, SafeAreaView, TouchableOpacity, Dimensions, StatusBar, Image, Easing} from "react-native";
+import { View, FlatList, Text, Modal, TextInput, SafeAreaView, TouchableOpacity, Dimensions, StatusBar, Image, Alert} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
@@ -219,10 +219,32 @@ export default function Home({navigation}) {
                                     ob.tasks = []
                                     break;
                             }
-                            FileSystem.writeAsStringAsync(doc + "Notes/" + tempTitle + ".json", JSON.stringify(ob)).then((file) => {
-                                setupApp()
-                                setModalVisible(!modalVisible)
-                                navigation.navigate("Note", {ob: JSON.stringify(ob), dir: doc + "Notes/" + tempTitle + ".json"})
+                            FileSystem.readDirectoryAsync(doc + "Notes/").then((arr) => {
+                                if(arr.includes(`${tempTitle}.json`)){
+                                    Alert.alert(
+                                        "Arquivo ja existem",
+                                        "Deseja sobreescrever?",
+                                        [
+                                        {
+                                            text: "Cancelar",
+                                            onPress: () => {return},
+                                        },
+                                        { text: "Sim", onPress: () => {
+                                            FileSystem.writeAsStringAsync(doc + "Notes/" + tempTitle + ".json", JSON.stringify(ob)).then((file) => {
+                                                setupApp()
+                                                setModalVisible(!modalVisible)
+                                                navigation.navigate("Note", {ob: JSON.stringify(ob), dir: doc + "Notes/" + tempTitle + ".json"})
+                                            })
+                                        }}
+                                        ]
+                                    );
+                                }else{
+                                    FileSystem.writeAsStringAsync(doc + "Notes/" + tempTitle + ".json", JSON.stringify(ob)).then((file) => {
+                                        setupApp()
+                                        setModalVisible(!modalVisible)
+                                        navigation.navigate("Note", {ob: JSON.stringify(ob), dir: doc + "Notes/" + tempTitle + ".json"})
+                                    })
+                                }
                             })
                         }}
                     >

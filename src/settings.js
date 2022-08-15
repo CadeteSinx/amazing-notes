@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import { View, SafeAreaView,Image, TouchableOpacity, Text, StyleSheet, Switch, Alert, BackHandler, StatusBar} from "react-native";
+import { View, SafeAreaView,Image, TouchableOpacity, Text, StyleSheet, Switch, Alert, BackHandler, Button} from "react-native";
 import * as Linking from "expo-linking"
 import * as FileSystem from "expo-file-system"
 import * as Notifications from "expo-notifications"

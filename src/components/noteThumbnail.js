@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import {TouchableOpacity, Alert, Text, View, StyleSheet} from 'react-native';
 import * as FileSystem from "expo-file-system"
+import * as Notifications from "expo-notifications"
 
 import palettes from './palettes';
 const pallette = palettes[0]
@@ -70,14 +71,6 @@ export default function NoteThumbnail({title, main, date, type, callBack, setupA
             flexDirection: "row",
             justifyContent: "space-between"
         },
-    })
-
-    useEffect(() => {
-        if(global.theme == true){
-            typePallette = palettes[5]
-        }else{
-            typePallette = palettes[3]
-        }
     })
 
     const doc = FileSystem.documentDirectory
@@ -166,7 +159,26 @@ export default function NoteThumbnail({title, main, date, type, callBack, setupA
                                 {
                                     text: "Yes",
                                     onPress: () => {
-                                        FileSystem.deleteAsync(doc + "Notes/" + title + ".json").then(setupApp())
+                                        if(type == 'Reminder'){
+                                            Notifications.getAllScheduledNotificationsAsync().then((array) => {
+                                                if(array.length == 0){
+                                                    FileSystem.deleteAsync(doc + "Notes/" + title + ".json").then(setupApp())
+                                                }else{
+                                                    array.forEach((element, index) => {
+                                                        var newString = element.content.title
+                                                        var stringArr = newString.split("-")
+                                                        if(stringArr[0] == title){
+                                                            Notifications.cancelScheduledNotificationAsync(element.identifier)
+                                                        }
+                                                        if(index == array.length - 1){
+                                                            FileSystem.deleteAsync(doc + "Notes/" + title + ".json").then(setupApp())
+                                                        }
+                                                    })
+                                                }   
+                                            })
+                                        }else{
+                                            FileSystem.deleteAsync(doc + "Notes/" + title + ".json").then(setupApp())
+                                        }
                                     }
                                 },
                                 {
