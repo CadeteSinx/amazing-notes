@@ -1,4 +1,4 @@
-# amazing-notes
+# Amazing Notes
 
 **Privacy Policy**
 
