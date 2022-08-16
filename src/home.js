@@ -2,7 +2,6 @@ import { View, FlatList, Text, Modal, TextInput, SafeAreaView, TouchableOpacity,
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
-import * as Font from "expo-font"
 
 //Custom 
 import palettes from "./components/palettes";
@@ -12,7 +11,6 @@ import NoteThumbnail from "./components/noteThumbnail";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
-    faChevronLeft,
     faBars,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -20,6 +18,22 @@ var pallette = palettes[2];
 var typePallette = palettes[3];
 
 export default function Home({navigation}) {
+    let character = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
+   
+    function getRndInteger(min, max) {
+        return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
+    function getIdentifier() {
+        let newString = ''
+        for (let index = 0; index < 9; index++) {
+            let int = getRndInteger(0, character.length)
+            newString += character[int]  
+        }
+        return newString
+    }
+
+
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -31,6 +45,7 @@ export default function Home({navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedValue, setSelectedValue] = useState("Simple Note");
     const [tag, setTag] = useState("All");
+
 
     const [originalNotes, setOriginalNotes] = useState([])
 
@@ -102,7 +117,7 @@ export default function Home({navigation}) {
             return <NoteThumbnail title={item.title} main={item.tasks} date={item.date} type={item.type} callBack={callback} setupApp={setupApp}/>
         }
         if(item.type == 'Reminder'){
-            return <NoteThumbnail title={item.title} main={item.tasks} date={item.date} type={item.type} callBack={callback} setupApp={setupApp}/>
+            return <NoteThumbnail title={item.title} main={item.tasks} date={item.date} identifier={item.identifier} type={item.type} callBack={callback} setupApp={setupApp}/>
         }
     }
 
@@ -120,15 +135,8 @@ export default function Home({navigation}) {
         setNotes(tempArray)
     }
 
-/*
-    
-    */
-   
     StatusBar.setBackgroundColor(pallette[3])
     StatusBar.setBarStyle("light-content")
-    const [loaded] = Font.useFonts({
-        'indieFlower': require('../assets/fonts/IndieFlower.ttf'),
-    });
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: pallette[3]}}>
@@ -217,6 +225,7 @@ export default function Home({navigation}) {
                                 case "Reminder":
                                     ob.type = "Reminder"
                                     ob.tasks = []
+                                    ob.identifier = getIdentifier()
                                     break;
                             }
                             FileSystem.readDirectoryAsync(doc + "Notes/").then((arr) => {

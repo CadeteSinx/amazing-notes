@@ -48,7 +48,7 @@ export default function Note({route, navigation}) {
 
     const [debugList, setDebugList] = useState([])
 
-    const scheduleNotification = (title, repeats, repeatType, date) => {
+    const scheduleNotification = (text, repeats, repeatType, date) => {
         const nd = new Date(date)
         const time = nd.toLocaleTimeString()
         const string = time.split(":")
@@ -67,18 +67,18 @@ export default function Note({route, navigation}) {
             }
             Notifications.scheduleNotificationAsync({
                 content: {
-                    title: `${object.title}-${title}`,
+                    title: `${title}-${text}`,
                     body: "",
-                    data: {},
+                    data: {notificationIdentifier: `${object.identifier}-${text}`},
                 },
                 trigger
-            });
+            })
         }else{
             Notifications.scheduleNotificationAsync({
                 content: {
-                    title: title,
+                    title: text,
                     body: "",
-                    data: {},
+                    data: {notificationIdentifier: `${object.identifier}-${text}`},
                 },
                 trigger: {
                     date: date,
@@ -96,9 +96,9 @@ export default function Note({route, navigation}) {
         setDatePickerVisibility(false);
     };
 
-    const handleConfirm = (date, title=tempTitle) => {
+    const handleConfirm = (date) => {
         const ob = {
-            text: title,
+            text: tempTitle,
             repeats: repeats,
             repeatType: repeatType,
             date: date.toLocaleString(),
@@ -145,7 +145,7 @@ export default function Note({route, navigation}) {
                     complete(tasks, index, setTasks)
                 }else{
                     array.forEach((element) => {
-                        if(element.content.title == item.text){
+                        if(element.content.data.notificationIdentifier == object.identifier + "-" + item.title){
                             Notifications.cancelScheduledNotificationAsync(element.identifier)
                            complete(tasks, index, setTasks)
                         }else{
@@ -228,6 +228,9 @@ export default function Note({route, navigation}) {
         if(type == "Checklist" || type == "Reminder"){
             newOb.tasks = tasks
         }
+        if(type == "Reminder"){
+            newOb.identifier = object.identifier
+        }
 
         FileSystem.deleteAsync(dir).then(() => {
             FileSystem.writeAsStringAsync(FileSystem.documentDirectory + "Notes/" + title + ".json", JSON.stringify(newOb)).then(() => {
@@ -306,8 +309,6 @@ export default function Note({route, navigation}) {
             marginRight : 20,
         },
     })
-    
-  
 
     //OPTIMIZE WORKING ON THIS
     return (
@@ -569,7 +570,7 @@ export default function Note({route, navigation}) {
                             tasks.length == 0 ?
                                 <View></View>
                             :
-                            tasks.map((item, index) => {
+                            tasks.map((item, index, key) => {
                                 return (
                                     <View>
                                         <TouchableOpacity 
@@ -581,7 +582,7 @@ export default function Note({route, navigation}) {
                                                         complete(tasks, index, setTasks)
                                                     }else{
                                                         array.forEach(element => {
-                                                            if(element.content.title == item.text){
+                                                            if(element.content.data.notificationIdentifier == object.identifier + "-" + item.text){
                                                                 Notifications.cancelScheduledNotificationAsync(element.identifier)
                                                                 let tempArray = tasks
                                                                 tempArray.splice(index, 1)

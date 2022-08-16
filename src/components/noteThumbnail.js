@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {TouchableOpacity, Alert, Text, View, StyleSheet} from 'react-native';
 import * as FileSystem from "expo-file-system"
 import * as Notifications from "expo-notifications"
@@ -8,7 +7,7 @@ const pallette = palettes[0]
 var typePallette = palettes[3]
 
 
-export default function NoteThumbnail({title, main, date, type, callBack, setupApp}){
+export default function NoteThumbnail({title, main, date, type, identifier,callBack, setupApp}){
     const homeStyles = StyleSheet.create({
         note: {
             height: 180,
@@ -165,9 +164,9 @@ export default function NoteThumbnail({title, main, date, type, callBack, setupA
                                                     FileSystem.deleteAsync(doc + "Notes/" + title + ".json").then(setupApp())
                                                 }else{
                                                     array.forEach((element, index) => {
-                                                        var newString = element.content.title
-                                                        var stringArr = newString.split("-")
-                                                        if(stringArr[0] == title){
+                                                        let newString = element.content.data.notificationIdentifier
+                                                        newString = newString.split('-')
+                                                        if(newString[0] == identifier){
                                                             Notifications.cancelScheduledNotificationAsync(element.identifier)
                                                         }
                                                         if(index == array.length - 1){
