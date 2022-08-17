@@ -20,13 +20,12 @@ import styles from "./styles/styles";
 var pallette = palettes[2] 
 
 export default function Settings({route, navigation}){
-    const [toggle, setToggle] = useState(theme)
-    const [colorTheme, setColorTheme] = useState(false)
+    const [toggle, setToggle] = useState(false)
+    const [colorTheme, setColorTheme] = useState("Dark")
     const [currentMemory, setCurrentMemory] = useState(0)
     const [doc, setDoc] = useState(FileSystem.documentDirectory)
 
     useEffect(() => {
-        pallette = global.pallette
         FileSystem.getFreeDiskStorageAsync().then((bytes) => {
             let gbValue = (bytes / (1000 * 1000 * 1000)).toFixed(2);
             setCurrentMemory(gbValue)

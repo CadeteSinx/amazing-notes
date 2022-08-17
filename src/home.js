@@ -33,8 +33,6 @@ export default function Home({navigation}) {
         return newString
     }
 
-
-
     const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
     ];
@@ -100,7 +98,6 @@ export default function Home({navigation}) {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            pallette = global.pallette
             setupApp()
         });
         return unsubscribe;

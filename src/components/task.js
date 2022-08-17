@@ -6,8 +6,6 @@ var typePalette = palettes[3]
 
 
 function Task(props) {
-    typePalette = global.typePallette
-
     const styles = StyleSheet.create({
         viewStyle: {
             paddingRight: 30,

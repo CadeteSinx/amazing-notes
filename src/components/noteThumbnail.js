@@ -74,9 +74,16 @@ export default function NoteThumbnail({title, main, date, type, identifier,callB
 
     const doc = FileSystem.documentDirectory
     let page = ''
-    if(type == "Simple Note" || type == "Checklist" || type == "Recipe"){
-        page = "Note"
-    }else{
+    if(type == "Checklist"){
+        page = "Checklist"
+    }
+    if(type == "Simple Note"){
+        page = "SimpleNote"
+    }
+    if(type == "Recipe"){
+        page = "Recipe"
+    }
+    if(type == "Reminder"){
         page = "Note"
     }
     const setupText = (main, type) => {

@@ -1,0 +1,10 @@
+{
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    },
+    "transformIgnorePatterns": [
+        "/node_modules/@fortawesome/react-native-fontawesome"
+    ]
+}
