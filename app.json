@@ -2,7 +2,7 @@
   "expo": {
     "name": "Amazing Notes",
     "slug": "amazing-notes",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/ic_launcher_adaptive_fore.png",
     "userInterfaceStyle": "light",
@@ -21,6 +21,7 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/ic_launcher_adaptive_fore.png",
         "backgroundColor": "#ECF0F1"

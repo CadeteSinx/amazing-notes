@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, TouchableOpacity, TextInput, Text, Modal, Dimensions, BackHandler} from 'react-native';
+import { View, TouchableOpacity, TextInput, Text, Modal, Dimensions, BackHandler, ScrollView} from 'react-native';
 import * as FileSystem from "expo-file-system"
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -88,7 +88,7 @@ export default function Recipe({navigation, route}) {
 
     return (
         <View style={noteStyles.outerContainer}>
-            <View style={noteStyles.innerContainer}>
+            <ScrollView style={noteStyles.innerContainer}>
 
                 <View style={{height: 100, backgroundColor: pallette[3]}}>
                     <TouchableOpacity onPress={() => {
@@ -175,18 +175,16 @@ export default function Recipe({navigation, route}) {
                             )
                         })
                     }
-
                     <Text style={[noteStyles.h1, {color: typePalette[1]}]}>Modo de Preparo</Text>
                     <TextInput style={noteStyles.mainText} value={mainText} placeholder={'You can write here!'} placeholderTextColor={"#777777"} onChangeText={setMainText} multiline={true}></TextInput>
+                </View>
+            </ScrollView>
 
-                    <TouchableOpacity style={{backgroundColor: pallette[2], height: 60, width: 60, borderRadius: 100, position: "absolute", top: Dimensions.get("window").height / 1.3, left: Dimensions.get("window").width / 1.4}} onPress={() => {
+            <TouchableOpacity style={{backgroundColor: pallette[2], height: 60, width: 60, borderRadius: 100, position: "absolute", top: Dimensions.get("window").height / 1.09, left: Dimensions.get("window").width / 1.4}} onPress={() => {
                         setModalVisible(true)
                     }}>
-                        <Text style={{alignSelf: "center", fontSize: 40, color: pallette[0]}}> + </Text>
-                    </TouchableOpacity>
-                </View>
-
-            </View>
+                    <Text style={{alignSelf: "center", fontSize: 40, color: pallette[0]}}> + </Text>
+                </TouchableOpacity>
         </View>
     );
 }

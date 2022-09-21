@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, TouchableOpacity, TextInput, Text, Modal, Dimensions, BackHandler} from 'react-native';
+import { View, TouchableOpacity, TextInput, Text, Modal, Dimensions, BackHandler, ScrollView} from 'react-native';
 import * as FileSystem from "expo-file-system"
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -66,7 +66,7 @@ export default function Checklist({navigation, route}) {
 
     return (
         <View style={noteStyles.outerContainer}>
-            <View style={noteStyles.innerContainer}>
+            <ScrollView style={noteStyles.innerContainer}>
 
                 <View style={{height: 100, backgroundColor: pallette[3]}}>
                     <TouchableOpacity onPress={() => {
@@ -74,7 +74,7 @@ export default function Checklist({navigation, route}) {
                     }}>
                         <FontAwesomeIcon icon={faChevronLeft} size={38} style={{ color: pallette[5], top: 25, backgroundColor: pallette[2], borderRadius: 10}}/> 
                     </TouchableOpacity>
-                    <TextInput style={[noteStyles.title, {color: typePalette[1]}]} value={title} onChangeText={setTitle}></TextInput>
+                    <TextInput style={[noteStyles.title, {color: typePalette[2]}]} value={title} onChangeText={setTitle}></TextInput>
                 </View>
 
                 <View>
@@ -122,39 +122,39 @@ export default function Checklist({navigation, route}) {
                         </View>
                     </Modal>
 
-                    {
-                        tasks.length == 0 ?
-                            <View>
-                                <Text style={{color: "#777777", fontStyle: "italic", fontSize: 20, top: 20}}>Press the + Button to add Task!</Text>
-                            </View>
-                        :
-                        tasks.map((item, index) => {
-                            if(item.description == '' || item.description == undefined){
-                                return (
-                                    <TouchableOpacity key={index} onPress={() => complete(tasks, index, setTasks, 1)} onLongPress={() => complete(tasks, index, setTasks)}>
-                                        <Task text={tasks[index].title} done={tasks[index].done} color={pallette[5]}/>
-                                    </TouchableOpacity>
-                                )
-                            }else{
-                                return (
-                                    <TouchableOpacity key={index} onPress={() => complete(tasks, index, setTasks, 1)} onLongPress={() => complete(tasks, index, setTasks)}>
-                                        <Task text={tasks[index].title} done={tasks[index].done} description={tasks[index].description} color={pallette[5]}/>
-                                    </TouchableOpacity>
-                                )
-                            }
-                        })
-                    }
+                {
+                    tasks.length == 0 ?
+                        <View>
+                            <Text style={{color: "#777777", fontStyle: "italic", fontSize: 20, top: 20}}>Press the + Button to add Task!</Text>
+                        </View>
+                    :
+                    tasks.map((item, index) => {
+                        if(item.description == '' || item.description == undefined){
+                            return (
+                                <TouchableOpacity key={index} onPress={() => complete(tasks, index, setTasks, 1)} onLongPress={() => complete(tasks, index, setTasks)}>
+                                    <Task text={tasks[index].title} done={tasks[index].done} color={pallette[5]}/>
+                                </TouchableOpacity>
+                            )
+                        }else{
+                            return (
+                                <TouchableOpacity key={index} onPress={() => complete(tasks, index, setTasks, 1)} onLongPress={() => complete(tasks, index, setTasks)}>
+                                    <Task text={tasks[index].title} done={tasks[index].done} description={tasks[index].description} color={pallette[5]}/>
+                                </TouchableOpacity>
+                            )
+                        }
+                    })
+                }
                         {/*FIXME transform this into a component*/}
-                        <TouchableOpacity style={{backgroundColor: pallette[2], height: 60, width: 60, borderRadius: 100, position: "absolute", top: Dimensions.get("window").height / 1.3, left: Dimensions.get("window").width / 1.4}} onPress={() => {
-                                setModalVisible(true)
-                            }}>
-                            <Text style={{alignSelf: "center", fontSize: 40, color: pallette[0]}}> + </Text>
-                        </TouchableOpacity>
+
                 </View>
                 
-            </View>
+            </ScrollView>
 
-           
+            <TouchableOpacity style={{backgroundColor: pallette[2], height: 60, width: 60, borderRadius: 100, position: "absolute", top: Dimensions.get("window").height / 1.09, left: Dimensions.get("window").width / 1.4}} onPress={() => {
+                    setModalVisible(true)
+                }}>
+                <Text style={{alignSelf: "center", fontSize: 40, color: pallette[0]}}> + </Text>
+            </TouchableOpacity>
         </View>
     );
 }

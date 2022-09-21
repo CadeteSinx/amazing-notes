@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react"
-import { View, TextInput, Text, Dimensions ,Modal, TouchableOpacity, SafeAreaView, BackHandler} from "react-native";
+import { View, TextInput, Text, Dimensions ,Modal, TouchableOpacity, SafeAreaView, BackHandler, ScrollView} from "react-native";
 import * as FileSystem from "expo-file-system";
 import Checkbox from 'expo-checkbox';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -234,8 +234,8 @@ export default function Note({route, navigation}) {
     })
 
     return (
-        <SafeAreaView style={{flex: 1,backgroundColor: pallette[3]}}>
-            <View style={{marginLeft: 20, marginRight: 20}}>
+        <View style={{flex: 1,backgroundColor: pallette[3]}}>
+            <ScrollView style={{marginLeft: 20, marginRight: 20}}>
 
                 <View style={{height: 100, backgroundColor: pallette[3]}}>
                     <TouchableOpacity onPress={() => {
@@ -376,8 +376,14 @@ export default function Note({route, navigation}) {
                             <Text style={{alignSelf: "center", fontSize: 40, color: pallette[0]}}> + </Text>
                         </TouchableOpacity>
                 </View>
-            </View>
-        </SafeAreaView>
+            </ScrollView>
+
+            <TouchableOpacity style={{backgroundColor: pallette[2], height: 60, width: 60, borderRadius: 100, position: "absolute", top: Dimensions.get("window").height / 1.09, left: Dimensions.get("window").width / 1.4}} onPress={() => {
+                    setModalVisible(true)
+                }}>
+                <Text style={{alignSelf: "center", fontSize: 40, color: pallette[0]}}> + </Text>
+            </TouchableOpacity>
+        </View>
     );
 }
 

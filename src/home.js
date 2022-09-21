@@ -248,7 +248,6 @@ export default function Home({navigation}) {
                                     FileSystem.writeAsStringAsync(doc + "Notes/" + tempTitle + ".json", JSON.stringify(ob)).then((file) => {
                                         setupApp()
                                         setModalVisible(!modalVisible)
-                                        navigation.navigate("Note", {ob: JSON.stringify(ob), dir: doc + "Notes/" + tempTitle + ".json"})
                                     })
                                 }
                             })

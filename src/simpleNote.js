@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TextInput, TouchableOpacity, BackHandler} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, BackHandler, ScrollView} from 'react-native';
 import * as FileSystem from "expo-file-system"
 
 import palettes from "./components/palettes";
@@ -45,7 +45,7 @@ export default function SimpleNote({navigation, route}) {
     }
 
     return (
-        <View style={noteStyles.outerContainer}>
+        <ScrollView style={noteStyles.outerContainer}>
             <View style={noteStyles.innerContainer}>
                 <View style={{height: 100, backgroundColor: pallette[3]}}>
                     <TouchableOpacity onPress={() => {
@@ -61,7 +61,7 @@ export default function SimpleNote({navigation, route}) {
                     <TextInput testID='mainText' style={noteStyles.mainText} value={mainText} placeholder={'You can write here!'} placeholderTextColor={"#777777"} onChangeText={setMainText} multiline={true}></TextInput>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
